@@ -1,9 +1,8 @@
 import React from "react"
 import Header from "./header"
 import hoursDedicatedToWebDev from '../utils/hoursDedicatedToWebDev'
-import layoutStyles from './Layout.module.scss'
+import layoutStyles from './layout.module.scss'
 import Img from "gatsby-image"
-import { graphql } from "gatsby"
 
 const Layout = (props) => {
 

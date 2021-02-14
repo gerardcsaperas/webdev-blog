@@ -66,7 +66,7 @@ function SobreMi(props) {
                     En cualquier caso, con este blog quiero empezar a compartir todo aquello que pienso que puede ser útil para aquellos aspirantes a desarrollador y que no se puede explicar en 140 caracteres.
                 </p>
                 <p>
-                    Para todo lo demás, <a target="_blank" href="https://twitter.com/____gerard____">Twitter</a>.
+                    Para todo lo demás, <a target="_blank" rel="noreferrer" href="https://twitter.com/____gerard____">Twitter</a>.
                 </p>
 
                 <p>
