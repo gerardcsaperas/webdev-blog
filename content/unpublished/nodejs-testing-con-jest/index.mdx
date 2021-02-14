@@ -1,0 +1,80 @@
+---
+title: Node.js Testing con Jest
+date: "2021-02-02"
+description: "Primeros pasos testeando tu aplicación Node con Jest."
+featuredImage: ./battlecreek-coffee-roasters-i22gbC3gFm4-unsplash.jpg
+---
+Si eres como yo (un novatillo en esto del desarrollo web), quizás no seas un hacha del testing (aún).
+
+Acompáñame en esta serie de entradas en las que te enseñaré como testear tu aplicación Node.js con Jest (además de algunos gifs).
+
+Voy a suponer que eres familiar con `npm` (o `yarn`, aunque voy a tirar de `npm`). Si nunca has usado Node Package Manager, este post no es para tí.
+
+Si ya eres familiar con Javascript, mira mi post sobre **cómo empezar con Node.js**.
+
+Si aún no sabes utilizar Javascript (o necesitas refrescarlo), **¿por qué no empiezas por aquí?**
+
+## Primeros Pasos
+
+Si no tenemos Jest instalado en nuestro entorno de desarrollo, no podemos usarlo, ¿no?
+
+Para instalar Jest:
+
+```
+npm install --save-dev jest
+```
+
+Al estar testeando una aplicación Node, dentro de nuestro archivo `package.json` añadiremos las secciones `"scripts.test"` y `"jest"` tal y como te enseño a continuación.
+
+```
+"scripts": {
+    ...
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "repository": {
+    ...
+  },
+```
+
+Una vez tengas testo hecho, quiero que en la carpeta en la que se encuentre tu `app.js` (o `index.js`, o como quiera que hayas llamado al archivo desde el que ejecutas la aplicación), crees una carpeta que se llame `tests`.
+
+Dentro de esa carpeta vamos a ir creando nuestros archivos `<nombre>.test.js`.
+
+## Tests Unitarios
+
+**¿Qué es un test unitario?** Un test en el que se comprueba el correcto funcionamiento de una unidad específica del código. En el caso de Node.js, eso acostumbrará a ser una función.
+
+Supongamos que queremos testear la función `writeJsonFile` que hemos declarado dentro del archivo `helper.js`.
+
+Hasta aquí bien. No obstante, seguramente hay algunas funciones en tu código que dependen de otras funciones, ¿verdad?
+
+En la jerga del testing, existe el concepto de *mock*. Definición de mock (en inglés):
+
+*verb*
+
+1. tease or laugh at in a scornful or contemptuous manner.
+2. **make a replica or imitation of something.**
+
+*adjective*
+
+1. **not authentic or real, but without the intention to deceive.**
+
+*...Si no sabes inglés, no tengo entrada al respecto, pero deberías dejarlo absolutamente todo y empezar por eso.*
+
+## Tests de Integración
+
+Los tests de integración (*integration tests*, en inglés) són tests que buscan comprobar el correcto funcionamiento de nuestras distintas piezas de código combinadas.
+
+Imagínate que tu aplicación es un puzzle. Los tests unitarios verifican que cada pieza tiene la forma que debería. Los tests de integración verifican que todas las piezas encajan y que resultan en la imagen deseada cuando las juntas.
+
+...Menuda analogía de puta madre que me he sacado de la manga. Queda bastante claro, ¿no?
+
+En los tests de integración es el punto en el que comprobamos que las rutas que hemos estado escribiendo funcionan como deberían. Para comprobar nuestras rutas (o *endpoints*) necesitare
+
+```
+npm install --save-dev env-cmd supertest
+```
+

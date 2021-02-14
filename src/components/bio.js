@@ -1,16 +1,7 @@
-/**
- * Bio component that queries for data
- * with Gatsby's StaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/static-query/
- */
-
 import React from "react"
 import { StaticQuery, graphql } from "gatsby"
 import Image from "gatsby-image"
-import styled from "styled-components"
-
-import { rhythm } from "../utils/typography"
+import bioStyles from "./bio.module.scss"
 
 function Bio() {
   return (
@@ -19,30 +10,29 @@ function Bio() {
       render={data => {
         const { author, social } = data.site.siteMetadata
         return (
-          <Container>
-            <Image
-              fixed={data.avatar.childImageSharp.fixed}
-              alt={author}
-              style={{
-                marginRight: rhythm(1 / 2),
-                marginBottom: 0,
-                minWidth: 50,
-                borderRadius: `100%`,
-              }}
-              imgStyle={{
-                borderRadius: `50%`,
-              }}
-            />
-            <p>
-              Written by <strong>{author}</strong>, passionate about Web
-              Development and Japan.
-              {` `}
-              <a href={`https://twitter.com/${social.twitter}`}>
-                Follow me on Youtube
-              </a>
-              .
-            </p>
-          </Container>
+            <div className={bioStyles.container}>
+                <Image
+                fixed={data.avatar.childImageSharp.fixed}
+                alt={author}
+                style={{
+                    marginRight: "2rem",
+                    marginBottom: 0,
+                    minWidth: 50,
+                    borderRadius: `100%`,
+                }}
+                imgStyle={{
+                    borderRadius: `50%`,
+                }}
+                />
+                <p className={bioStyles.text}>
+                Escrito por <strong>{author}</strong>, amante del Desarrollo Web y Japón.
+                {` `}
+                <a href={`https://twitter.com/${social.twitter}`}>
+                    Sígueme en Twitter
+                </a>
+                .
+                </p>
+            </div>
         )
       }}
     />
@@ -51,7 +41,7 @@ function Bio() {
 
 const bioQuery = graphql`
   query BioQuery {
-    avatar: file(absolutePath: { regex: "/dromedary.jpg/" }) {
+    avatar: file(relativePath: { eq: "gerard.jpg" }) {
       childImageSharp {
         fixed(width: 50, height: 50) {
           ...GatsbyImageSharpFixed
@@ -67,10 +57,6 @@ const bioQuery = graphql`
       }
     }
   }
-`
-
-const Container = styled.div`
-  display: flex;
 `
 
 export default Bio

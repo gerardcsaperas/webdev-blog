@@ -6,11 +6,12 @@ module.exports = {
     description: `Un blog sobre desarrollo web y aprendizaje autónomo.`,
     siteUrl: `https://webdevnomad.com/`,
     social: {
-      twitter: `gatsbyjs`,
+      twitter: `____gerard____`,
       youtube: `webdev nomad`,
     },
   },
   plugins: [
+    'gatsby-plugin-sass',
     `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-styled-components`,
     `gatsby-transformer-sharp`,
@@ -28,52 +29,67 @@ module.exports = {
           async: false,
         },
         query: `
-          {
-            allMdx {
-              nodes {
-                id
-                fields { slug }
-                excerpt
-                rawBody
-                frontmatter {
-                  title
-                  description
-                  date(formatString: "MMMM DD, YYYY")
+            {
+                allMdx {
+                    nodes {
+                        id
+                        fields { slug }
+                        excerpt
+                        rawBody
+                        timeToRead
+                        frontmatter {
+                            title
+                            description
+                            date(formatString: "MMMM DD, YYYY")
+                            featuredImage {
+                                childImageSharp {
+                                    fluid (maxWidth: 1000, quality: 100) {
+                                        base64
+                                        tracedSVG
+                                        srcWebp
+                                        srcSetWebp
+                                        originalImg
+                                        originalName
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
         `,
         ref: "id",
         index: ["title", "rawBody"],
-        store: ["id", "slug", "date", "title", "excerpt", "description"],
+        store: ["id", "slug", "date", "title", "excerpt", "description", "timeToRead", "featuredImage"],
         normalizer: ({ data }) =>
-          data.allMdx.nodes.map(node => ({
-            id: node.id,
-            slug: node.fields.slug,
-            rawBody: node.rawBody,
-            excerpt: node.excerpt,
-            title: node.frontmatter.title,
-            description: node.frontmatter.description,
-            date: node.frontmatter.date,
-          })),
+            data.allMdx.nodes.map(node => ({
+                id: node.id,
+                slug: node.fields.slug,
+                rawBody: node.rawBody,
+                excerpt: node.excerpt,
+                timeToRead: node.timeToRead,
+                title: node.frontmatter.title,
+                description: node.frontmatter.description,
+                featuredImage: node.frontmatter.featuredImage,
+                date: node.frontmatter.date,
+            })),
       },
     },
     `gatsby-plugin-feed-mdx`,
     `gatsby-plugin-root-import`,
     {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/content/blog`,
-        name: `blog`,
-      },
+        resolve: `gatsby-source-filesystem`,
+        options: {
+            path: `${__dirname}/content/blog`,
+            name: `blog`,
+        },
     },
     {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/content/assets`,
-        name: `assets`,
-      },
+        resolve: `gatsby-source-filesystem`,
+        options: {
+            path: `${__dirname}/content/assets`,
+            name: `assets`,
+        },
     },
     {
       resolve: `gatsby-plugin-mdx`,
@@ -83,7 +99,7 @@ module.exports = {
           {
             resolve: `gatsby-remark-images`,
             options: {
-              maxWidth: 590,
+              maxWidth: 900,
             },
           },
           {

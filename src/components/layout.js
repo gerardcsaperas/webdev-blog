@@ -1,84 +1,36 @@
 import React from "react"
-import { Link } from "gatsby"
-import styled from "styled-components"
+import Header from "./header"
+import hoursDedicatedToWebDev from '../utils/hoursDedicatedToWebDev'
+import layoutStyles from './Layout.module.scss'
+import Img from "gatsby-image"
+import { graphql } from "gatsby"
 
-import { rhythm, scale } from "../utils/typography"
+const Layout = (props) => {
 
-class Layout extends React.Component {
-  render() {
-    const { location, title, children } = this.props
-    const rootPath = `${__PATH_PREFIX__}/`
-    const blogPath = `${__PATH_PREFIX__}/blog/`
-    let header
+    const { children, image } = props
 
-    if (location.pathname === rootPath || location.pathname === blogPath) {
-      header = (
-        <h1
-          style={{
-            ...scale(1.5),
-            marginBottom: rhythm(1.5),
-            marginTop: 0,
-          }}
-        >
-          <Link
-            style={{
-              boxShadow: `none`,
-              textDecoration: `none`,
-              color: `inherit`,
-            }}
-            to={location.pathname === blogPath ? `/blog/` : `/`}
-          >
-            {title}
-          </Link>
-        </h1>
-      )
-    } else {
-      header = (
-        <h3
-          style={{
-            fontFamily: `Montserrat, sans-serif`,
-            marginTop: 0,
-          }}
-        >
-          <Link
-            style={{
-              boxShadow: `none`,
-              textDecoration: `none`,
-              color: `inherit`,
-            }}
-            to={`/blog/`}
-          >
-            {title}
-          </Link>
-        </h3>
-      )
-    }
     return (
-      <Wrapper>
-        <div
-          style={{
-            marginLeft: `auto`,
-            marginRight: `auto`,
-            maxWidth: rhythm(24),
-            padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
-          }}
-        >
-          <header>{header}</header>
-          <main>{children}</main>
+        <div>
+            <Header />
+            <Img className={layoutStyles.headerImg}  fluid={image} imgStyle={{
+                objectPosition: "50% 50%",
+            }}/>
+            <div
+            className={layoutStyles.contentContainer}
+            style={
+                {
+                    marginTop: `${props.marginTop || -260 }px`
+                }
+            }
+            >
+                {children}
+            </div>
+            <footer className={layoutStyles.footer}>
+                <p>© {new Date().getFullYear()}, Gerard Castrelo Saperas</p>
+                <p>Experiencia total en Desarrollo Web: {hoursDedicatedToWebDev()}</p>
+            </footer>
         </div>
-        <Footer>© {new Date().getFullYear()}, Gerard Castrelo Saperas</Footer>
-      </Wrapper>
     )
-  }
 }
-
-const Wrapper = styled.div`
-  min-height: 100vh;
-`
-
-const Footer = styled.footer`
-  text-align: center;
-  margin: 24px;
-`
 
 export default Layout

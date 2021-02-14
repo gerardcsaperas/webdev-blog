@@ -1,0 +1,27 @@
+@import '../../static/library.scss';
+
+.articlePreviewBox {
+    width: 100%;
+    border: 1px solid #eee;
+    margin-bottom: 60px;
+    background: white;
+}
+
+.postInfo {
+    padding: 2rem;
+}
+
+.postLink {
+    color: $dark-gray;
+    line-height: 150%;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;    
+}
+
+.hr {
+    margin-bottom: 1rem;
+}
+
+.excerpt {
+    margin-top: 2.5rem;
+}

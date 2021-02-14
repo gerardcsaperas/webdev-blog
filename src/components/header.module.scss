@@ -1,0 +1,33 @@
+@import "../../static/library.scss";
+
+.Header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.navUl {
+    display: flex;
+
+    li {
+        list-style: none;
+        margin-right: 1rem;
+
+       &:last-of-type {
+           margin-right: 0;
+       }
+    }
+
+    a {
+        color: $dark-gray;
+
+        .navLink {
+
+        }
+
+        .activeNavLink {
+
+        }
+    }
+}

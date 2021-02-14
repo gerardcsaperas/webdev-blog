@@ -1,0 +1,22 @@
+.postContainer {
+    padding: 2rem;
+    text-align: justify;
+    background-color: white;
+    border: 1px solid #eee;
+
+    h1 {
+        margin-top: 2rem;
+    }
+
+    li {
+        margin-left: 2rem;
+    }
+}
+
+.postInfo {
+    display: flex;
+    
+    p {
+        margin-right: 2rem;
+    }
+}

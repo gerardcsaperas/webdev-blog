@@ -1,10 +1,12 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, Fragment } from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
 import { useFlexSearch } from "react-use-flexsearch"
 import * as queryString from "query-string"
 
 import { rhythm } from "../utils/typography"
+import Img from "gatsby-image"
+import allPostsStyle from "./allPosts.module.scss"
 
 const SearchBar = styled.div`
   display: flex;
@@ -41,77 +43,90 @@ const SearchBar = styled.div`
   }
 `
 
-const SearchedPosts = ({ results }) =>
-  results.length > 0 ? (
-    results.map(node => {
-      const date = node.date
-      const title = node.title || node.slug
-      const description = node.description
-      const excerpt = node.excerpt
-      const slug = node.slug
-
-      return (
-        <div key={slug}>
-          <h3
-            style={{
-              marginBottom: rhythm(1 / 4),
-            }}
-          >
-            <Link style={{ boxShadow: `none` }} to={`/blog${slug}`}>
-              {title}
-            </Link>
-          </h3>
-          <small>{date}</small>
-          <p
-            dangerouslySetInnerHTML={{
-              __html: description || excerpt,
-            }}
-          />
-        </div>
-      )
-    })
-  ) : (
-    <p style={{ textAlign: "center" }}>
-      Sorry, couldn't find any posts matching this search.
-    </p>
-  )
-
 const AllPosts = ({ posts }) => (
-  <div style={{ margin: "20px 0 40px" }}>
-    {posts.map(({ node }) => {
-      const title = node.frontmatter.title || node.fields.slug
-      return (
-        <div key={node.fields.slug}>
-          <h3
-            style={{
-              marginBottom: rhythm(1 / 4),
-            }}
-          >
-            <Link style={{ boxShadow: `none` }} to={`/blog${node.fields.slug}`}>
-              {title}
-            </Link>
-          </h3>
-          <small>{node.frontmatter.date}</small>
-          <p
-            dangerouslySetInnerHTML={{
-              __html: node.frontmatter.description || node.excerpt,
-            }}
-          />
-        </div>
-      )
-    })}
-  </div>
+  <Fragment>
+    { posts.length > 0 ?
+        posts.map(({ node }) => {
+            const title = node.frontmatter.title || node.fields.slug || ""
+            return (
+            <article key={node.fields.slug} className={allPostsStyle.articlePreviewBox}>
+                <Link to={`/blog${node.fields.slug}`}>
+                    <div>
+                        { node.frontmatter.featuredImage &&
+                            <Img fluid={node.frontmatter.featuredImage.childImageSharp.fluid} />
+                        }
+                    </div>
+                </Link>
+                <div className={allPostsStyle.postInfo}>
+                    <h3 className={allPostsStyle.postLink}>
+                        <Link
+                        style={{ boxShadow: `none`, color: 'inherit' }}
+                        to={`/blog${node.fields.slug}`}
+                        className={allPostsStyle.postA}
+                        >
+                            {title}
+                        </Link>
+                    </h3>
+                    <hr className={allPostsStyle.hr}/>
+                    <small>
+                        {node.frontmatter.date} | Tiempo de lectura: {node.timeToRead} minutos
+                    </small>
+                    <p
+                        className={allPostsStyle.excerpt}
+                        dangerouslySetInnerHTML={{
+                        __html: node.frontmatter.description || node.excerpt,
+                        }}
+                    />
+                </div>
+            </article>
+        )
+        })
+    : (
+        <p style={{ textAlign: "center", marginTop: "250px" }}>
+            Sorry, couldn't find any posts matching this search.
+        </p>
+    )
+    }
+  </Fragment>
 )
 
 const SearchPosts = ({ posts, localSearchBlog, location, navigate }) => {
-  const { search } = queryString.parse(location.search)
-  const [query, setQuery] = useState(search || "")
+    const { search } = queryString.parse(location.search)
+    const [ query, setQuery ] = useState(search || "")
+    const [ formattedResults, setFormattedResults ] = useState([]);
 
-  const results = useFlexSearch(
-    query,
-    localSearchBlog.index,
-    JSON.parse(localSearchBlog.store)
-  )
+    const results = useFlexSearch(
+        query,
+        localSearchBlog.index,
+        JSON.parse(localSearchBlog.store)
+    )
+
+  useEffect(() => {
+    if (results.length > 0) {
+        let newFormattedResults = [];
+        for (let node of results) {
+            const { date, title, description, excerpt, slug, featuredImage, timeToRead } = node;
+            newFormattedResults.push({
+                node: {
+                    excerpt,
+                    fields: {
+                        slug
+                    },
+                    timeToRead,
+                    frontmatter: {
+                        date,
+                        description,
+                        featuredImage,
+                        title,
+                    }
+                }
+            })
+        }
+        setFormattedResults(newFormattedResults);
+    } else {
+        setFormattedResults([]);
+    }
+  }, [query])
 
   return (
     <>
@@ -126,7 +141,7 @@ const SearchPosts = ({ posts, localSearchBlog, location, navigate }) => {
         <input
           id="search"
           type="search"
-          placeholder="Search all posts"
+          placeholder="Escribe y verás..."
           value={query}
           onChange={e => {
             navigate(
@@ -136,7 +151,10 @@ const SearchPosts = ({ posts, localSearchBlog, location, navigate }) => {
           }}
         />
       </SearchBar>
-      {query ? <SearchedPosts results={results} /> : <AllPosts posts={posts} />}
+      { query ?
+        <AllPosts posts={formattedResults} /> :
+        <AllPosts posts={posts} />
+      }
     </>
   )
 }

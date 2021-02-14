@@ -1,0 +1,90 @@
+---
+title: Automatización IT con Ansible
+date: "2021-02-08"
+description: "Primeros pasos con Ansible, una herramienta para automatizar tus procesos de DevOps."
+featuredImage: ./neonbrand-5afenxnLDjs-unsplash.jpg
+---
+Las tareas repetitivas son la receta perfecta para errores humanos y *burnout* laboral.
+
+*...En otras palabras; me ha tocado aprender Ansible en el curro y lo he convertido en una entrada del blog.*
+
+## ¿Qué es Ansible?
+
+Ansible es una herramienta de automatización IT. Puede configurar sistemas, desplegar software y orquestrar tareas avanzadas.
+
+*...No. Aún no puede picar código por tí. Algún día. Quizás. Tú no te rindas, sigue procrastinando.*
+
+## Instalación
+
+Vamos a instalar Ansible en nuestro *host*. En otras palabras. No hace falta que instalemos Ansible en los ordenadores (o equipos, nodos, etc.) que vamos a controlar, únicamente lo instalamos en el ordenador desde el que controlamos a los otros. 
+
+
+
+
+### Instalación en Ubuntu 18.04
+
+
+```
+1. sudo apt-add-repository ppa:ansible/ansible
+2. sudo apt update
+3. sudo apt install ansible
+```
+
+
+
+### Instalación en Mac (también Big Sur, Apple M1)
+
+Voy a suponer que tienes un Mac. De hecho, voy a hacerle un favor gigante a todas esas personas que se han comprado la nueva *beta* de Mac. Un Mac con el chip Apple M1.
+
+Si no tienes un Mac, estoy seguro de que podrás encontrar cómo se instala Ansible [aquí](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#from-pip) (y sino, en Youtube).
+
+```
+brew install ansible
+```
+
+*...Así de fácil. No hagas caso de la guía de Ansible (en lo que a instalación se refiere). Sírvete una buena jarra de Ansible casera y te olvidas.*
+
+<p align="center">
+    <img src="https://media.giphy.com/media/L0EeB2MIcMmwE/giphy.gif" />
+</p>
+
+Una vez tengas ansible instalado; cierras la terminal, abresu una nueva y ejecutas el siguiente comando:
+
+```
+ansible --version
+```
+
+Te tendría que imprimir información sobre la versión de Ansible que has instalado.
+
+Si no te imprime nada ~~quizás es porque no tienes tinta en la impresora~~ prueba con el siguiente comando:
+
+```
+wingardium percival ansible
+```
+
+<p align="center">
+    <img src="https://media.giphy.com/media/8Yyk9RtfERlRu/giphy.gif" />
+</p>
+
+_...No, joder. Claro que no. Prueba con:_
+
+```
+echo 'export PATH="/usr/local/opt/<ansible@2.9>/bin:$PATH"' >> ~/.zshrc
+```
+
+Este comando es válido para los Mac con el nuevo chip M1. Ten en cuenta que *ansible@2.9* hace referencia a mi versión en particular, en tu caso el comando puede que sea distinto.
+
+_...Si no te aclaras, déjame un comentario y nos lo miramos. Que en realidad soy buena persona._
+
+
+
+## ssh-keygen (from node machine)
+
+Habrá casos en los que vas a necesitar conectarte a bitbucket (u otros servicios) de forma remota desde el nodo remoto.
+
+Para ello, será necesario que generes claves ssh (mediante `ssh-keygen`) y que copies el archivo `.pub` en el servicio que quieras acceder.
+
+- Instalar `vagrant scp`
+- `cd` hasta el directorio en el que tienes el `Vagrantfile`
+- `vagrant scp [node]:/home/<user>/.ssh/<clave>.pub .`
+
