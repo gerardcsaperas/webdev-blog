@@ -6,7 +6,7 @@ module.exports = {
     description: `Un blog sobre desarrollo web y aprendizaje autónomo.`,
     siteUrl: `https://webdevnomad.com/`,
     social: {
-      twitter: `____gerard____`,
+      twitter: `_cenandoenjapon`,
       youtube: `webdev nomad`,
     },
   },
